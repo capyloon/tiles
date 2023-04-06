@@ -1,0 +1,45 @@
+{
+  "name": "MediaPlayer",
+  "description": "A Media Player With Remote Control",
+  "start_url": "/index.html",
+  "version": "1.0",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "type": "image/svg",
+      "sizes": "any"
+    }
+  ],
+  "b2g_features": {
+    "developer": {
+      "name": "The Capyloon team"
+    },
+    "serviceworker": {
+      "script_url": "sw.js"
+    },
+    "activities": {
+      "p2p-tile-start": {
+        "filters": {
+          "sessionId": { "mandatory": true }
+        },
+        "href": "/index.html"
+      }
+    },
+    "permissions": {
+      "dweb": {}
+    }
+  },
+  "tile": {
+    "resources": [
+      "/index.html",
+      "/remote.html",
+      "/js/main.js",
+      "/js/remote.js",
+      "/js/config.js",
+      "/sw.js",
+      "/style/main.css",
+      "/style/remote.css",
+      "/icons/icon.svg"
+    ]
+  }
+}
