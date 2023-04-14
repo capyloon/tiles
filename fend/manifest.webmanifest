@@ -1,0 +1,41 @@
+{
+  "name": "FendSearch",
+  "description": "A Search Provider using fend",
+  "start_url": "/index.html",
+  "version": "1.0",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "type": "image/svg",
+      "sizes": "any"
+    }
+  ],
+  "b2g_features": {
+    "developer": {
+      "name": "The Capyloon team"
+    },
+    "serviceworker": {
+      "script_url": "sw.js"
+    },
+    "activities": {
+      "search-provider": {
+        "filters": {
+          "input": { "mandatory": true }
+        },
+        "href": "/index.html",
+        "returnValue": true
+      }
+    }
+  },
+  "tile": {
+    "resources": [
+      "/index.html",
+      "/js/main.js",
+      "/js/fend_wasm.js",
+      "/js/fend_wasm_bg.wasm",
+      "/sw.js",
+      "/style/main.css",
+      "/icons/icon.svg"
+    ]
+  }
+}

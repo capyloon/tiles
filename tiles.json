@@ -3,5 +3,10 @@
     "description": "A Media Player With Remote Control",
     "manifestUrl": "https://raw.githubusercontent.com/capyloon/tiles/main/mediaplayer/manifest.webmanifest",
     "icon": "https://raw.githubusercontent.com/capyloon/tiles/main/mediaplayer/icons/icon.svg"
+  },
+  {
+    "description": "A Search Provider using fend",
+    "manifestUrl": "https://raw.githubusercontent.com/capyloon/tiles/main/fend/manifest.webmanifest",
+    "icon": "https://raw.githubusercontent.com/capyloon/tiles/main/fend/icons/icon.svg"
   }
 ]
