@@ -1,4 +1,5 @@
-import { UTF8_DECODER } from './intrinsics.js';
+const UTF8_DECODER = new TextDecoder('utf-8');
+
 export function addConsoleToImports(imports, obj, get_export) {
   if (!("console" in imports)) imports["console"] = {};
   imports["console"]["console-log"] = function(arg0, arg1) {

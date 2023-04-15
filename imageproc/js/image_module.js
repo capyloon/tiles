@@ -1,10 +1,51 @@
-import {
-  clamp_host,
-  data_view,
-  UTF8_DECODER,
-  utf8_encode,
-  UTF8_ENCODED_LEN,
-} from "./intrinsics.js";
+function clamp_host(i, min, max) {
+  if (!Number.isInteger(i)) throw new TypeError(`must be an integer`);
+  if (i < min || i > max)
+    throw new RangeError(`must be between ${min} and ${max}`);
+  return i;
+}
+
+let DATA_VIEW = new DataView(new ArrayBuffer());
+
+function data_view(mem) {
+  if (DATA_VIEW.buffer !== mem.buffer) DATA_VIEW = new DataView(mem.buffer);
+  return DATA_VIEW;
+}
+const UTF8_DECODER = new TextDecoder("utf-8");
+
+const UTF8_ENCODER = new TextEncoder("utf-8");
+
+function utf8_encode(s, realloc, memory) {
+  if (typeof s !== "string") throw new TypeError("expected a string");
+
+  if (s.length === 0) {
+    UTF8_ENCODED_LEN = 0;
+    return 1;
+  }
+
+  let alloc_len = 0;
+  let ptr = 0;
+  let writtenTotal = 0;
+  while (s.length > 0) {
+    ptr = realloc(ptr, alloc_len, 1, alloc_len + s.length);
+    alloc_len += s.length;
+    const { read, written } = UTF8_ENCODER.encodeInto(
+      s,
+      new Uint8Array(
+        memory.buffer,
+        ptr + writtenTotal,
+        alloc_len - writtenTotal
+      )
+    );
+    writtenTotal += written;
+    s = s.slice(read);
+  }
+  if (alloc_len > writtenTotal) ptr = realloc(ptr, alloc_len, 1, writtenTotal);
+  UTF8_ENCODED_LEN = writtenTotal;
+  return ptr;
+}
+let UTF8_ENCODED_LEN = 0;
+
 export class ImageModule {
   addToImports(imports) {}
 
