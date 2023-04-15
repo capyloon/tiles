@@ -98,8 +98,8 @@ class ImageProcessor {
 
     console.log(`Loading effect list...`);
 
-    const { ImageModule } = await import(`/js/image_module.js`);
-    const { addConsoleToImports } = await import(`/js/console.js`);
+    const { ImageModule } = await import(new URL("/js/image_module.js", location));
+    const { addConsoleToImports } = await import(new URL("/js/console.js", location));
 
     this.module = new ImageModule();
 
@@ -112,7 +112,7 @@ class ImageProcessor {
       }
     });
 
-    const wasmUrl = "/resources/images.wasm";
+    const wasmUrl = new URL("/resources/images.wasm", location);
     await this.module.instantiate(fetch(wasmUrl), imports);
     console.log(`Module instanciated`);
     this.algorithms = this.module.algorithms(navigator.language);
