@@ -32,6 +32,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   let _activities = new ActivityManager({
     "p2p-tile-called": onCalled,
   });
+
+  if (location.protocol == "http:") {
+    onCalled({});
+  }
 });
 
 // Function called when the app start in "receiving" mode.

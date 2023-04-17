@@ -43,6 +43,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       log(e);
     }
   };
+
+  if (location.protocol == "http:") {
+    onStart({});
+  }
 });
 
 function setStatus(msg) {
