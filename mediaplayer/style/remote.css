@@ -3,17 +3,28 @@ body {
   width: 100%;
   height: 100%;
   font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 * {
   box-sizing: border-box;
 }
 
-#error {
-  color: darkred;
+video {
+  max-width: 100vw;
+  border: none;
 }
 
-video {
-  max-width: 80vw;
-  border: 2px solid grey;
+sl-progress-ring {
+  --size: 50vw;
+  --track-width: 0.5em;
+  --indicator-width: 0.75em;
+}
+
+.hidden {
+  display: none;
 }

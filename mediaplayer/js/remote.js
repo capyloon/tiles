@@ -2,7 +2,14 @@ const kDeps = [
   {
     name: "main",
     kind: "virtual",
-    deps: ["activity manager", "tile helper"],
+    deps: [
+      "shared-fluent",
+      "activity manager",
+      "tile helper",
+      "shoelace-light-theme",
+      "shoelace-setup",
+      "shoelace-progress-ring",
+    ],
   },
   {
     name: "activity manager",
@@ -43,6 +50,14 @@ async function onCalled(data) {
   log(`onCalled`);
   let helper = new TileHelper(data);
 
+  let progressRing = document.querySelector("sl-progress-ring");
+  let ringInterval = window.setInterval(() => {
+    progressRing.value += 5;
+    if (progressRing.value > 100) {
+      progressRing.value = 0;
+    }
+  }, 250);
+
   helper.addEventListener("open", (event) => {
     log(`Connected`);
 
@@ -61,10 +76,6 @@ async function onCalled(data) {
       }
 
       playerEvent(event) {
-        document.getElementById(
-          "status"
-        ).textContent = `${this.player.currentTime} / ${this.player.duration}`;
-
         // Throttle timeupdate events to 1Hz
         let now = Date.now();
         if (event.type === "timeupdate") {
@@ -85,11 +96,12 @@ async function onCalled(data) {
 
       async configure({ name, ticket }) {
         log(`configure ${ticket}`);
-        document.getElementById("title").textContent = name;
         this.player.src = `http://localhost:${config.port}/dweb/${ticket}`;
-        document.getElementById(
-          "status"
-        ).textContent = `Duration: ${this.player.duration}`;
+
+        window.clearInterval(ringInterval);
+        progressRing.classList.add("hidden");
+        document.querySelector("video").classList.remove("hidden");
+
         return true;
       }
 
@@ -99,6 +111,20 @@ async function onCalled(data) {
 
       async pause() {
         this.player.pause();
+      }
+
+      async seekBy(delta) {
+        log(`seekBy ${delta}`);
+        let old = this.player.currentTime;
+        this.player.currentTime += delta;
+        log(`  ${old} -> ${this.player.currentTime}`);
+      }
+
+      async seekTo(pos) {
+        log(`seekTo ${pos}`);
+        let old = this.player.currentTime;
+        this.player.currentTime = pos;
+        log(`  ${old} -> ${this.player.currentTime}`);
       }
     }
 

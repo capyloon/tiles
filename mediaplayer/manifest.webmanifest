@@ -26,7 +26,8 @@
       }
     },
     "permissions": {
-      "dweb": {}
+      "dweb": {},
+      "themeable": {}
     }
   },
   "tile": {

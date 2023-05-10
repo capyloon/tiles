@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Media Player</title>
+    <title>Media Player - Controller</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -9,6 +9,7 @@
     />
     <meta name="defaultLanguage" content="en-US" />
     <meta name="availableLanguages" content="en-US" />
+    <link rel="localization" href="locales/{locale}/main.ftl" />
 
     <link rel="icon" href="icons/icon.svg" />
     <link rel="stylesheet" href="style/main.css" type="text/css" />
@@ -18,12 +19,47 @@
     <script src="js/main.js"></script>
   </head>
   <body>
-    <h1>Media Player Remote Control</h1>
-    <button id="pick-button">Pick Media To Play</button>
-    <h3 id="title"></h3>
-    <h4 id="status">Waiting for peer...</h4>
-    <div id="controls">
-      <button id="ctrl-start-pause">Play</button>
-    </div>
+    <section class="waiting-for-peer">
+      <sl-progress-ring>
+        <span data-l10n-id="waiting-for-peer"></span>
+      </sl-progress-ring>
+      <sl-button variant="primary" data-l10n-id="cancel"></sl-button>
+    </section>
+
+    <section class="hidden picking-media">
+      <h3 class="title"></h3>
+      <div class="buttons">
+        <sl-button
+          variant="primary"
+          id="pick-button"
+          data-l10n-id="pick-button"
+        >
+        </sl-button>
+        <sl-button disabled id="start-playing" variant="primary" circle>
+          <sl-icon name="play"></sl-icon>
+        </sl-button>
+      </div>
+    </section>
+
+    <section class="hidden controlling-media">
+      <div>
+        <sl-range class="time-range"></sl-range>
+        <div class="timing">
+          <span class="current-time"></span><span class="duration"></span>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <sl-button circle size="large" variant="primary" id="ctrl-skip-back">
+          <sl-icon name="skip-back"></sl-icon>
+        </sl-button>
+        <sl-button circle size="large" variant="primary" id="ctrl-start-pause">
+          <sl-icon name="play"></sl-icon>
+        </sl-button>
+        <sl-button circle size="large" variant="primary" id="ctrl-skip-fwd">
+          <sl-icon name="skip-forward"></sl-icon>
+        </sl-button>
+      </div>
+    </section>
   </body>
 </html>

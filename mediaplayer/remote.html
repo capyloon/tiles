@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Media Player</title>
+    <title>Media Player - Display</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -9,6 +9,7 @@
     />
     <meta name="defaultLanguage" content="en-US" />
     <meta name="availableLanguages" content="en-US" />
+    <link rel="localization" href="locales/{locale}/remote.ftl" />
 
     <link rel="icon" href="icons/icon.svg" />
     <link rel="stylesheet" href="style/remote.css" type="text/css" />
@@ -18,8 +19,9 @@
     <script src="js/remote.js"></script>
   </head>
   <body>
-    <h1 id="title">Waiting for media...</h1>
-    <video id="player"></video>
-    <h4 id="status"></h4>
+    <sl-progress-ring>
+      <span data-l10n-id="waiting-for-media"></span>
+    </sl-progress-ring>
+    <video class="hidden" id="player"></video>
   </body>
 </html>

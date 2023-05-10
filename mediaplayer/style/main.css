@@ -3,12 +3,50 @@ body {
   width: 100%;
   height: 100%;
   font-family: sans-serif;
+  padding: 0;
+  margin: 0;
 }
 
 * {
   box-sizing: border-box;
 }
 
-#error {
-  color: darkred;
+section {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+sl-progress-ring {
+  --size: 50vw;
+  --track-width: 0.5em;
+  --indicator-width: 0.75em;
+}
+
+sl-progress-ring span {
+  padding: 0.5em;
+}
+
+.hidden {
+  display: none;
+}
+
+div.buttons {
+  display: flex;
+  gap: 1em;
+}
+
+.time-range {
+  --track-color-active: var(--sl-color-primary-600);
+  --track-color-inactive: var(--sl-color-primary-100);
+  width: 80vw;
+}
+
+.timing {
+  margin-top: 1em;
+  display: flex;
+  justify-content: space-between;
 }
