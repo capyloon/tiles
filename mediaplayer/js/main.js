@@ -135,6 +135,10 @@ class PickingMediaSection {
   hide() {
     this.section.classList.add("hidden");
   }
+
+  get mediaName() {
+    return this.media.name;
+  }
 }
 
 const PLAYBACK_EVENTS = ["durationchange", "timeupdate", "play", "pause"];
@@ -231,6 +235,9 @@ class ControllingMediaSection {
   }
 
   show() {
+    let title = this.section.querySelector(".title");
+    title.textContent = sections.get(PICKING_MEDIA)?.mediaName;
+
     this.section.classList.remove("hidden");
     document.l10n.translateFragment(this.section);
     this.reset();
