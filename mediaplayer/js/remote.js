@@ -9,6 +9,8 @@ const kDeps = [
       "shoelace-light-theme",
       "shoelace-setup",
       "shoelace-progress-ring",
+      "shoelace-button",
+      "shoelace-icon",
     ],
   },
   {
@@ -75,6 +77,17 @@ async function onCalled(data) {
         });
       }
 
+      // Sends the current player state to the controller.
+      updatePlayerState(name) {
+        let detail = {
+          duration: this.player.duration,
+          currentTime: this.player.currentTime,
+          paused: this.player.paused,
+          muted: this.player.muted,
+        };
+        this.broadcastMessage({ name, detail });
+      }
+
       playerEvent(event) {
         // Throttle timeupdate events to 1Hz
         let now = Date.now();
@@ -86,12 +99,7 @@ async function onCalled(data) {
           }
         }
 
-        let detail = {
-          duration: this.player.duration,
-          currentTime: this.player.currentTime,
-          paused: this.player.paused,
-        };
-        this.broadcastMessage({ name: event.type, detail });
+        this.updatePlayerState(event.type);
       }
 
       async configure({ name, ticket }) {
@@ -100,12 +108,20 @@ async function onCalled(data) {
 
         window.clearInterval(ringInterval);
         progressRing.classList.add("hidden");
-        document.querySelector("video").classList.remove("hidden");
+
+        let title = document.querySelector("h3");
+        title.classList.remove("hidden");
+        title.dataset.l10nArgs = JSON.stringify({ name });
+        document.body.classList.add("film-bg");
 
         return true;
       }
 
       async play() {
+        document.querySelector("h3").classList.add("hidden");
+        document.querySelector("video").classList.remove("hidden");
+        document.body.classList.remove("film-bg");
+
         this.player.play();
       }
 
@@ -125,6 +141,21 @@ async function onCalled(data) {
         let old = this.player.currentTime;
         this.player.currentTime = pos;
         log(`  ${old} -> ${this.player.currentTime}`);
+      }
+
+      async setMuted(muted) {
+        this.player.muted = muted;
+        let indicator = document.querySelector(".muted-indicator").classList;
+        if (muted) {
+          indicator.remove("hidden");
+        } else {
+          indicator.add("hidden");
+        }
+
+        // We update the state right away to allow the muted state to sync
+        // properly even if the playback is paused.
+        // TODO: use a custom event name instead of hijacking 'timeupdate'.
+        this.updatePlayerState("timeupdate");
       }
     }
 

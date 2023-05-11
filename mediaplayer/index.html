@@ -27,7 +27,7 @@
     </section>
 
     <section class="hidden picking-media">
-      <h3 class="title"></h3>
+      <h3 class="title" data-l10n-id="pick-choose-media"></h3>
       <div class="buttons">
         <sl-button
           variant="primary"
@@ -35,15 +35,18 @@
           data-l10n-id="pick-button"
         >
         </sl-button>
-        <sl-button disabled id="start-playing" variant="primary" circle>
-          <sl-icon name="play"></sl-icon>
+        <sl-button
+          id="start-playing"
+          variant="success"
+          data-l10n-id="start-playing"
+        >
         </sl-button>
       </div>
     </section>
 
     <section class="hidden controlling-media">
       <h3 class="title"></h3>
-      <div>
+      <div class="status">
         <sl-range class="time-range"></sl-range>
         <div class="timing">
           <span class="current-time"></span><span class="duration"></span>
@@ -60,7 +63,20 @@
         <sl-button circle size="large" variant="primary" id="ctrl-skip-fwd">
           <sl-icon name="skip-forward"></sl-icon>
         </sl-button>
+        <sl-button circle size="large" variant="primary" id="ctrl-mute">
+          <sl-icon name="volume-x"></sl-icon>
+        </sl-button>
       </div>
+    </section>
+
+    <section class="hidden closing">
+      <h3 class="title" data-l10n-id="connection-closed"></h3>
+      <img src="/images/thats_all_folks.png" />
+      <sl-button
+        variant="primary"
+        id="close-button"
+        data-l10n-id="close-button"
+      ></sl-button>
     </section>
   </body>
 </html>

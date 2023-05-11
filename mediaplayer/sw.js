@@ -3,6 +3,9 @@ const ACTIVITIES_URL = {
   "p2p-tile-called": "/remote.html",
   "p2p-tile-start": "/index.html",
 };
+const ACTIVITIES_DISPOSITION = {
+  "p2p-tile-called": "fullscreen",
+};
 
 try {
   importScripts(`http://shared.localhost/js/activity_sw.js`);

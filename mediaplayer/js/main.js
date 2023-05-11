@@ -38,9 +38,11 @@ const kDeps = [
 // - Waiting for the remote peer to connect.
 // - Peer connected, waiting to pick a media.
 // - Controlling a media remotely.
+// - Closing the app when the remote player is gone.
 const WAITING_FOR_PEER = "waiting-for-peer";
 const PICKING_MEDIA = "picking-media";
 const CONTROLLING_MEDIA = "controlling-media";
+const CLOSING = "closing";
 
 var uiState = WAITING_FOR_PEER;
 var sections = new Map();
@@ -127,9 +129,9 @@ class PickingMediaSection {
 
   show() {
     this.section.classList.remove("hidden");
+    document.l10n.translateFragment(this.section);
     this.playButton.disabled = true;
     this.title.textContent = "";
-    document.l10n.translateFragment(this.section);
   }
 
   hide() {
@@ -138,6 +140,24 @@ class PickingMediaSection {
 
   get mediaName() {
     return this.media.name;
+  }
+}
+
+class ClosingSection {
+  constructor() {
+    this.section = document.querySelector("section.closing");
+    this.section.querySelector("#close-button").onclick = () => {
+      window.close();
+    };
+  }
+
+  show() {
+    this.section.classList.remove("hidden");
+    document.l10n.translateFragment(this.section);
+  }
+
+  hide() {
+    this.section.classList.add("hidden");
   }
 }
 
@@ -153,6 +173,10 @@ class ControllingMediaSection {
     this.skipBackButton.onclick = this.onSkipBack.bind(this);
     this.skipFwdButton = this.section.querySelector("#ctrl-skip-fwd");
     this.skipFwdButton.onclick = this.onSkipFwd.bind(this);
+    this.toggleMutedButton = this.section.querySelector("#ctrl-mute");
+    this.toggleMutedButton.onclick = async () => {
+      await this.client.setMuted(!this.state.muted);
+    };
 
     this.currentTime = this.section.querySelector(".current-time");
     this.duration = this.section.querySelector(".duration");
@@ -181,7 +205,10 @@ class ControllingMediaSection {
   formatTime(duration) {
     let hours = "";
     if (duration > 3600) {
-      hours = Math.floor(duration / 3600).toString().padStart(2, "0") + ":";
+      hours =
+        Math.floor(duration / 3600)
+          .toString()
+          .padStart(2, "0") + ":";
     }
     let minutes = Math.floor((duration % 3600) / 60)
       .toString()
@@ -203,6 +230,12 @@ class ControllingMediaSection {
       this.playPauseButton.firstElementChild.setAttribute("name", "pause");
     }
 
+    if (this.state.muted) {
+      this.toggleMutedButton.firstElementChild.setAttribute("name", "volume");
+    } else {
+      this.toggleMutedButton.firstElementChild.setAttribute("name", "volume-x");
+    }
+
     this.currentTime.textContent = this.formatTime(this.state.currentTime);
     this.duration.textContent = this.formatTime(this.state.duration);
     this.timeRange.value = this.state.currentTime;
@@ -213,6 +246,7 @@ class ControllingMediaSection {
       duration: 0,
       currentTime: 0,
       paused: true,
+      muted: false,
     };
     this.timeRange.max = null;
     this.timeRange.value = 0;
@@ -267,6 +301,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   sections.set(WAITING_FOR_PEER, new WaitingForPeerSection());
   sections.set(PICKING_MEDIA, new PickingMediaSection());
+  sections.set(CLOSING, new ClosingSection());
 
   if (location.protocol == "http:") {
     onStart({});
@@ -307,6 +342,10 @@ class RemoteClient extends EventTarget {
   seekTo(pos) {
     return this.client.callFunc("seekTo", pos);
   }
+
+  setMuted(muted) {
+    return this.client.callFunc("setMuted", muted);
+  }
 }
 
 function switchUiState(newState) {
@@ -339,7 +378,7 @@ async function onStart(data) {
 
   helper.addEventListener("close", () => {
     log(`helper: close event`);
-    // TODO: switch to "the end" screen.
+    switchUiState(CLOSING);
   });
 
   try {

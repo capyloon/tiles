@@ -50,3 +50,25 @@ div.buttons {
   display: flex;
   justify-content: space-between;
 }
+
+.picking-media,
+.controlling-media,
+.closing {
+  background-image: url(/icons/film.svg);
+  background-position: center;
+  background-size: 50%;
+}
+
+.title,
+.controlling-media .status {
+  padding: 1em;
+  backdrop-filter: blur(5px);
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 1em;
+  text-align: center;
+}
+
+.closing img {
+  max-height: 50vh;
+  max-width: 90vw;
+}

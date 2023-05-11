@@ -40,7 +40,11 @@
       "/sw.js",
       "/style/main.css",
       "/style/remote.css",
-      "/icons/icon.svg"
+      "/icons/icon.svg",
+      "/icons/film.svg",
+      "/locales/en-US/main.ftl",
+      "/locales/en-US/remote.ftl",
+      "/images/thats_all_folks.png"
     ]
   }
 }
