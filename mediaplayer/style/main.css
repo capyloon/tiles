@@ -66,6 +66,9 @@ div.buttons {
   background-color: rgba(255, 255, 255, 0.25);
   border-radius: 1em;
   text-align: center;
+  max-width: 90vw;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .closing img {
